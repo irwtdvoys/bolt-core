@@ -17,7 +17,7 @@
 		{
 			if ($this->cryptographyCheck() === false)
 			{
-				die("Mcrypt not available on server");
+				throw new \Exception("Mcrypt not available on server");
 			}
 
 			$this->setAlgorithm($algorithm);
