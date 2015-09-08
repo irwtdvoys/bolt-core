@@ -1,7 +1,7 @@
 <?php
 	namespace Bolt;
 
-	class Enum
+	abstract class Enum
 	{
 		public function expose()
 		{
