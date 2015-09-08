@@ -7,7 +7,7 @@
 		public $info;
 		public $data;
 
-		public function open($options = false)
+		public function open($options = null)
 		{
 			$this->resource = curl_init();
 
