@@ -4,26 +4,26 @@
 	class Crypto extends Base
 	{
 		private $mod = null; // Resource
-		private $vector;
-		private $vectorSize;
+		protected $vector;
+		protected $vectorSize;
 
-		private $algorithm;
-		private $mode;
-		private $key;
+		protected $algorithm;
+		protected $mode;
+		protected $key;
 
 		private $base64;
 
-		public function __construct($algorithm = "tripledes", $mode = "ecb", $key = "ABCDEFGH12345678abcdefgh", $base64 = true, $vector = null, $auto = false)
+		public function __construct($algorithm = "tripledes", $mode = "ecb", $key = "ABCDEFGH12345678abcdefgh", $base64 = true, $vector = null, $auto = true)
 		{
 			if ($this->cryptographyCheck() === false)
 			{
 				throw new \Exception("Mcrypt not available on server");
 			}
 
-			$this->setAlgorithm($algorithm);
-			$this->setMode($mode);
-			$this->setKey($key);
-			$this->vector = $vector;
+			$this->algorithm($algorithm);
+			$this->mode($mode);
+			$this->key($key);
+			$this->vector($vector);
 
 			$this->setEncoding($base64);
 
@@ -87,50 +87,12 @@
 			return trim(mdecrypt_generic($this->mod, $data)); // trim removes padding added to the key when originally encrypted)
 		}
 
-		public function getKey()
-		{
-			return $this->key;
-		}
-
-		public function setKey($key)
-		{
-			$this->key = $key;
-			return $this->getKey();
-		}
-
-		public function getMode()
-		{
-			return $this->mode;
-		}
-
-		public function setMode($mode)
-		{
-			$this->mode = $mode;
-			return $this->getMode();
-		}
-
-		public function getAlgorithm()
-		{
-			return $this->algorithm;
-		}
-
-		public function setAlgorithm($algorithm)
-		{
-			$this->algorithm = $algorithm;
-			return $this->getAlgorithm();
-		}
-
-		public function getVector()
-		{
-			return $this->vector;
-		}
-
 		public function setVector($vector = null)
 		{
 			$this->vector = ($vector === null) ? mcrypt_create_iv(mcrypt_enc_get_iv_size($this->mod), MCRYPT_RAND) : $vector;
 
 			$this->vectorSize = mcrypt_enc_get_iv_size($this->mod);
-			return $this->getVector();
+			return $this->vector();
 		}
 
 		public function getEncoding()
@@ -141,7 +103,7 @@
 		public function setEncoding($status)
 		{
 			$this->base64 = ($status === true) ? true : false;
-			return $this->getEncoding();
+			return $this->encoding();
 		}
 	}
 ?>
