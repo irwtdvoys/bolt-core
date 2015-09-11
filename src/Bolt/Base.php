@@ -19,8 +19,19 @@
 			{
 				foreach ($properties as $property)
 				{
-					$value = is_array($data) ? $data[$property->name] : $data->{$property->name};
-					$this->{$property->name}($value);
+					if (is_array($data))
+					{
+						$value = isset($data[$property->name]) ? $data[$property->name] : null;
+					}
+					else
+					{
+						$value = isset($data->{$property->name}) ? $data->{$property->name} : null;
+					}
+
+					if ($value !== null)
+					{
+						$this->{$property->name}($value);
+					}
 				}
 			}
 
