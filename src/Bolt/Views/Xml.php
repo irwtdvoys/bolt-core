@@ -1,10 +1,11 @@
 <?php
 	namespace Bolt\Views;
 
-	use \Bolt\View;
+	use \Bolt\Base;
+	use \Bolt\Interfaces\View;
 	use \Bolt\Arrays;
 
-	class Xml extends View
+	class Xml extends Base implements View
 	{
 		protected $dom;
 

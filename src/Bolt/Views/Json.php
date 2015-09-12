@@ -1,10 +1,11 @@
 <?php
 	namespace Bolt\Views;
 
-	use \Bolt\View;
+	use \Bolt\Base;
+	use \Bolt\Interfaces\View;
 	use \Bolt\Arrays;
 
-	class Json extends View
+	class Json extends Base implements View
 	{
 		public function render($content)
 		{
