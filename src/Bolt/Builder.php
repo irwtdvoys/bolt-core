@@ -11,5 +11,10 @@
 
 			return $class;
 		}
+
+		public static function model($name, Interfaces\Connection $connection, $data = null)
+		{
+			return new $name($connection, $data);
+		}
 	}
 ?>
