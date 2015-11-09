@@ -11,7 +11,7 @@
 		protected $mode;
 		protected $key;
 
-		private $base64;
+		protected $encoding;
 
 		public function __construct($algorithm = "tripledes", $mode = "ecb", $key = "ABCDEFGH12345678abcdefgh", $base64 = true, $vector = null, $auto = true)
 		{
@@ -24,8 +24,7 @@
 			$this->mode($mode);
 			$this->key($key);
 			$this->vector($vector);
-
-			$this->setEncoding($base64);
+			$this->encoding($base64);
 
 			if ($auto === true)
 			{
@@ -66,12 +65,12 @@
 				$data = $this->vector . $data;
 			}
 
-			return ($this->base64 === true) ? base64_encode($data) : $data;
+			return ($this->encoding === true) ? base64_encode($data) : $data;
 		}
 
 		public function decrypt($data)
 		{
-			$data = ($this->base64 === true) ? base64_decode($data) : $data;
+			$data = ($this->encoding === true) ? base64_decode($data) : $data;
 
 			if ($this->vectorSize > 0)
 			{
@@ -93,17 +92,6 @@
 
 			$this->vectorSize = mcrypt_enc_get_iv_size($this->mod);
 			return $this->vector();
-		}
-
-		public function getEncoding()
-		{
-			return $this->base64;
-		}
-
-		public function setEncoding($status)
-		{
-			$this->base64 = ($status === true) ? true : false;
-			return $this->encoding();
 		}
 	}
 ?>
