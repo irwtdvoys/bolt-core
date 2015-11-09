@@ -1,13 +1,15 @@
 <?php
 	namespace Bolt\Exceptions;
 
-	class Api extends \Exception
+	use \Exception;
+
+	class Crypto extends Exception
 	{
 		protected $codes;
 
 		public function __construct($code, Exception $previous = null)
 		{
-			$codes = new \Bolt\Codes\Api();
+			$codes = new Codes\Crypto();
 
 			parent::__construct($codes->fromCode($code), $code, $previous);
 		}
