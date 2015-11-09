@@ -16,5 +16,10 @@
 		{
 			return new $name($connection, $data);
 		}
+
+		public static function core($name)
+		{
+			return new $name();
+		}
 	}
 ?>
