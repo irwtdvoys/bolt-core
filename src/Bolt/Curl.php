@@ -44,7 +44,7 @@
 			return curl_setopt($this->resource, $option, $value);
 		}
 
-		public function fetch($options = false)
+		public function fetch($options = null)
 		{
 			$this->open($options);
 			$this->execute();
