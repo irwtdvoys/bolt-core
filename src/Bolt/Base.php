@@ -11,7 +11,7 @@
 			}
 		}
 
-		private function populate($data)
+		protected function populate($data)
 		{
 			$properties = $this->getProperties();
 
