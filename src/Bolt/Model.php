@@ -5,15 +5,14 @@
 
 	abstract class Model extends Base
 	{
-		protected $interface;
+		protected $adapter;
 
 		public function __construct(Connection $connection, $data = null)
 		{
-			$className = $this->classname();
+			$className = $this->classname(false);
+			$className = "Bolt\\Adapters\\" . $className . "\\" . $connection->classname(false);
 
-			$className = "Bolt\\Interfaces\\Models\\" . $className . "\\" . $connection->classname(false);
-
-			$this->interface = new $className($connection);
+			$this->adapter = new $className($connection, $this);
 
 			if ($data !== null)
 			{
@@ -68,7 +67,7 @@
 
 		public function load()
 		{
-			$this->populate($this->interface->load());
+			$this->populate($this->adapter->load());
 		}
 	}
 ?>
