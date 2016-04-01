@@ -1,18 +1,20 @@
 <?php
 	namespace Bolt;
 
+	use \Bolt\Exceptions\Codes\Files as Codes;
+
 	class Files
 	{
-		public $resource = false;
+		public $resource = null;
 		public $stats;
 
 		public function open($filename, $mode = "w", $permissions = 0777)
 		{
 			$created = false;
 
-			if ($this->resource !== false)
+			if ($this->resource !== null)
 			{
-				return false;
+				throw new Exceptions\Files(Codes::FILE_ALREADY_OPEN);
 			}
 
 			if (file_exists($filename) === false)
@@ -36,7 +38,7 @@
 
 			$this->resource = fopen($filename, $mode);
 
-			if ($this->resource !== false)
+			if ($this->resource !== null)
 			{
 				if ($created === true)
 				{
@@ -51,9 +53,9 @@
 
 		public function close()
 		{
-			if ($this->resource === false)
+			if ($this->resource === null)
 			{
-				return false;
+				throw new Exceptions\Files(Codes::FILE_NOT_OPEN);
 			}
 
 			if (fclose($this->resource) === true)
@@ -75,9 +77,9 @@
 
 		public function read($length = null)
 		{
-			if ($this->resource === false)
+			if ($this->resource === null)
 			{
-				return false;
+				throw new Exceptions\Files(Codes::FILE_NOT_OPEN);
 			}
 
 			if ($length == null)
@@ -90,9 +92,9 @@
 
 		public function seek($position, $type = SEEK_SET)
 		{
-			if ($this->resource === false)
+			if ($this->resource === null)
 			{
-				return false;
+				throw new Exceptions\Files(Codes::FILE_NOT_OPEN);
 			}
 
 			return (fseek($this->resource, $position, $type) == 0) ? true : false;
@@ -100,9 +102,9 @@
 
 		public function create($filename, $content, $permissions = 0777)
 		{
-			if ($this->resource !== false)
+			if ($this->resource !== null)
 			{
-				return false;
+				throw new Exceptions\Files(Codes::FILE_ALREADY_OPEN);
 			}
 
 			$this->open($filename, "w+", $permissions);
@@ -114,9 +116,9 @@
 
 		public function load($filename)
 		{
-			if ($this->resource !== false)
+			if ($this->resource !== null)
 			{
-				return false;
+				throw new Exceptions\Files(Codes::FILE_ALREADY_OPEN);
 			}
 
 			$this->open($filename, "r");
