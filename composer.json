@@ -1,13 +1,15 @@
 {
     "name": "cruxoft/bolt-core",
-    "description": "PHP Framework",
+    "description": "Core elements for the Bolt Framework",
+    "license": "Apache-2.0",
     "keywords": [
         "framework"
     ],
     "type": "library",
     "authors": [
         {
-            "name": "Steve Adams"
+            "name": "Steve Adams",
+            "role": "Developer"
         }
     ],
     "require": {
