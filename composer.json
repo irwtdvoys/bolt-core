@@ -3,6 +3,7 @@
     "description": "Core elements for the Bolt Framework",
     "license": "Apache-2.0",
     "keywords": [
+        "bolt",
         "framework"
     ],
     "type": "library",
@@ -22,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Bolt\\": "src/Bolt/"
+            "Bolt\\": "src/"
         }
     }
 }
