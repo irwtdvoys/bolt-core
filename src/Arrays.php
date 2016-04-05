@@ -36,7 +36,7 @@
 				arsort($subArray);
 			}
 
-			foreach($subArray as $key => $val)
+			foreach ($subArray as $key => $val)
 			{
 				$results[] = $array[$key];
 			}
