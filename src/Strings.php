@@ -24,7 +24,7 @@
 				$i++;
 			}
 
-			if(!empty($return))
+			if (!empty($return))
 			{
 				return $return;
 			}
@@ -95,8 +95,8 @@
 
 		public static function isJson($string)
 		{
-			$result = @json_decode($string);
-			return ($result === null) ? false : true;
+			json_decode($string);
+			return (json_last_error() == JSON_ERROR_NONE);
 		}
 	}
 ?>
