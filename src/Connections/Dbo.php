@@ -164,7 +164,8 @@
 			elseif ($queryType == "INSERT" && $return === true && $single === true)
 			{
 				$id = $this->connection->lastInsertId();
-				$table = substr($SQL, 12, strpos($SQL, " ", 12) - 12);
+				$cleaned = str_replace("\n", " ", $SQL); // Todo: use better system of determining table name
+				$table = substr($cleaned, 12, strpos($cleaned, " ", 12) - 12);
 				$index = $this->query("SHOW INDEX FROM `" . $this->config->database() . "`." . $table . " WHERE `Key_name` = 'PRIMARY'", array(), true); // possible security issue here as the statement ?cant? be prepared
 				$key = $index['Column_name'];
 
