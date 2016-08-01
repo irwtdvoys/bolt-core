@@ -200,9 +200,14 @@
 
 				$this->bind($values);
 				$this->execute();
+
+				$results[] = $this->fetch($SQL, $return, $single, $style, $argument);
 			}
 
-			$results = $this->fetch($SQL, $return, $single, $style, $argument);
+			if ($single === true)
+			{
+				$results = $results[0];
+			}
 
 			return $results;
 		}
