@@ -8,6 +8,8 @@
 	class Dbo extends Base implements Connection
 	{
 		protected $connection;
+		protected $statement;
+
 		public $config;
 
 		public function __construct(Config\Dbo $config)
@@ -69,73 +71,62 @@
 			$this->connection(null);
 		}
 
-		public function query($SQL, $parameters = array(), $return = false, $style = \PDO::FETCH_ASSOC, $argument = null)
+		public function prepare($SQL)
 		{
-			if ($this->connection == "")
-			{
-				throw new \Bolt\Exceptions\Dbo();
-			}
-
-			$results = array();
-
 			try
 			{
-				$statement = $this->connection->prepare($SQL);
+				$this->statement = $this->connection->prepare($SQL);
 			}
 			catch (\PDOException $error)
 			{
 				throw new \Bolt\Exceptions\Dbo($error);
 			}
+		}
 
-			if (!is_array(reset($parameters)))
-			{
-				$parameters = array($parameters);
-				$single = true;
-			}
-			else
-			{
-				$single = false;
-			}
+		public function bind($values)
+		{
+			$arrayType = ($values == array_values($values)) ? "NUM" : "ASSOC";
 
-			for ($loop = 0; $loop < count($parameters); $loop++)
+			if (count($values) > 0)
 			{
-				$values = $parameters[$loop];
-				$arrayType = ($values == array_values($values)) ? "NUM" : "ASSOC";
-
-				if (count($values) > 0)
+				foreach ($values as $key => $value)
 				{
-					foreach ($values as $key => $value)
+					$paramType = $this->getParameterType($value);
+
+					$id = $key;
+
+					if ($arrayType != "ASSOC")
 					{
-						$paramType = $this->getParameterType($value);
+						$id = $key + 1;
+					}
 
-						$id = $key;
-
-						if ($arrayType != "ASSOC")
-						{
-							$id = $key + 1;
-						}
-
-						try
-						{
-							$statement->bindParam($id, $values[$key], $paramType);
-						}
-						catch (\PDOException $error)
-						{
-							throw new \Bolt\Exceptions\Dbo($error);
-						}
+					try
+					{
+						$this->statement->bindParam($id, $values[$key], $paramType);
+					}
+					catch (\PDOException $error)
+					{
+						throw new \Bolt\Exceptions\Dbo($error);
 					}
 				}
-
-				try
-				{
-					$statement->execute();
-				}
-				catch (\PDOException $error)
-				{
-					throw new \Bolt\Exceptions\Dbo($error);
-				}
 			}
+		}
 
+		public function execute()
+		{
+			try
+			{
+				$this->statement->execute();
+			}
+			catch (\PDOException $error)
+			{
+				throw new \Bolt\Exceptions\Dbo($error);
+			}
+		}
+
+		public function fetch($SQL, $return = false, $single = true, $style = \PDO::FETCH_ASSOC, $argument = null)
+		{
+			$results = array();
 			$queryType = strtoupper(substr($SQL, 0, strpos($SQL, " ")));
 
 			if ($queryType == "SELECT" || $queryType == "SHOW")
@@ -145,10 +136,10 @@
 					case \PDO::FETCH_CLASS:
 					case \PDO::FETCH_COLUMN:
 					case \PDO::FETCH_FUNC:
-						$results = $statement->fetchAll($style, $argument);
+						$results = $this->statement->fetchAll($style, $argument);
 						break;
 					default:
-						$results = $statement->fetchAll($style);
+						$results = $this->statement->fetchAll($style);
 						break;
 				}
 
@@ -164,6 +155,7 @@
 			elseif ($queryType == "INSERT" && $return === true && $single === true)
 			{
 				$id = $this->connection->lastInsertId();
+
 				$cleaned = str_replace("\n", " ", $SQL); // Todo: use better system of determining table name
 				$table = substr($cleaned, 12, strpos($cleaned, " ", 12) - 12);
 				$index = $this->query("SHOW INDEX FROM `" . $this->config->database() . "`." . $table . " WHERE `Key_name` = 'PRIMARY'", array(), true); // possible security issue here as the statement ?cant? be prepared
@@ -171,6 +163,50 @@
 
 				$SQL = "SELECT * FROM " . $table . " WHERE " . $key . " = " . $id;
 				$results = $this->query($SQL, array(), true, $style, $argument);
+			}
+			elseif ($queryType == "UPDATE" && $return === true)
+			{
+				$results = array(
+					"success" => ($results === false) ? false : true,
+					"affected" => $this->statement->rowCount()
+				);
+			}
+
+			return $results;
+		}
+
+		public function query($SQL, $parameters = array(), $return = false, $style = \PDO::FETCH_ASSOC, $argument = null)
+		{
+			if ($this->connection == "")
+			{
+				throw new \Bolt\Exceptions\Dbo("Not connected");
+			}
+
+			$this->prepare($SQL);
+
+			if (!is_array(reset($parameters)))
+			{
+				$parameters = array($parameters);
+				$single = true;
+			}
+			else
+			{
+				$single = false;
+			}
+
+			for ($loop = 0; $loop < count($parameters); $loop++)
+			{
+				$values = $parameters[$loop];
+
+				$this->bind($values);
+				$this->execute();
+
+				$results[] = $this->fetch($SQL, $return, $single, $style, $argument);
+			}
+
+			if ($single === true)
+			{
+				$results = $results[0];
 			}
 
 			return $results;
