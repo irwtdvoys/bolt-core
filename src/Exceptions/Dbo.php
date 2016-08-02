@@ -7,11 +7,20 @@
 
 		public function __construct(\PDOException $previous = null)
 		{
-			$info = $previous->errorInfo;
-			$code = $info[1];
-			$message = $info[2];
+			if ($previous->errorInfo === null)
+			{
+				preg_match('/SQLSTATE\[(\w+)\] \[(\w+)\] (.*)/', $previous->getMessage(), $matches);
+				array_shift($matches);
+			}
+			else
+			{
+				$matches = $previous->errorInfo;
+			}
 
-			parent::__construct($message, $code, $previous);
+			$code = $matches[0];
+			$message = sprintf("[%s] %s", $matches[1], $matches[2]);
+
+			parent::__construct($message, hexdec($code), $previous);
 		}
 	}
 ?>
