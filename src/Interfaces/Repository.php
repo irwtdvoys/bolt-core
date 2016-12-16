@@ -1,7 +1,7 @@
 <?php
 	namespace Bolt\Interfaces;
 
-	interface Repository
+	abstract class Repository
 	{
 
 	}
