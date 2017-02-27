@@ -74,7 +74,6 @@
 		{
 			$this->files->open($filename, "r");
 
-			$csvData = array();
 			$count = 0;
 
 			while (($row = fgetcsv($this->files->resource, 0, $this->delimiter, $this->enclosure)) !== false)
