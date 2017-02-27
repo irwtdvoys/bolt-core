@@ -4,8 +4,7 @@
 		public function testFirstOne()
 		{
 			$base = new Bolt\Stubs\Base();
-			$this->assertInstanceOf("Bolt\Base", $base);
+			$this->assertInstanceOf("Bolt\\Base", $base);
 		}
 	}
 ?>
-
