@@ -1,6 +1,8 @@
 <?php
 	namespace Bolt;
 
+	use \Bolt\Exceptions\Framework as Exception;
+
 	abstract class Base
 	{
 		public function __construct($data = null)
@@ -73,12 +75,20 @@
 
 		public function __call($name, $args)
 		{
+			$class = $this->className();
+
+			if (property_exists($class, $name) === false)
+			{
+				throw new Exception("Property `" . $name . "` not found on class `" . $class . "`", 1);
+			}
+
 			if ($args == array())
 			{
 				return $this->$name;
 			}
 
 			$this->$name = $args[0];
+
 			return true;
 		}
 	}
