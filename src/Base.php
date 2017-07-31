@@ -32,7 +32,14 @@
 
 					if ($value !== null)
 					{
-						$this->{$property->name}($value);
+						if (is_object($value))
+						{
+							$value = $this->{$property->name}->populate($value);
+						}
+						else
+						{
+							$this->{$property->name}($value);
+						}
 					}
 				}
 			}
