@@ -32,7 +32,7 @@
 
 					if ($value !== null)
 					{
-						if (is_object($value))
+						if ($value instanceof Base)
 						{
 							$value = $this->{$property->name}->populate($value);
 						}
