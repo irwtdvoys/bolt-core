@@ -98,5 +98,19 @@
 
 			return true;
 		}
+
+		public function __debugInfox()
+		{
+			$properties = $this->getProperties();
+
+			$results = array();
+
+			foreach ($properties as $property)
+			{
+				$results[$property->name] = $this->{$property->name}();
+			}
+
+			return $results;
+		}
 	}
 ?>
