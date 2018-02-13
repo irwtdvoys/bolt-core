@@ -32,7 +32,7 @@
 
 					if ($value !== null)
 					{
-						if ($value instanceof Base)
+						if ($this->{$property->name} instanceof Base)
 						{
 							$value = $this->{$property->name}->populate($value);
 						}
