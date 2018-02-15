@@ -1,6 +1,8 @@
 <?php
 	namespace Bolt;
 
+	use Bolt\Exceptions\Curl as Exception;
+
 	class Curl extends Http
 	{
 		private $resource = null;
@@ -35,7 +37,7 @@
 
 			if ($this->info['http_code'] === 0)
 			{
-				throw new Exceptions\Curl($this->error());
+				throw new Exception("Error executing cURL request", $this->error());
 			}
 		}
 

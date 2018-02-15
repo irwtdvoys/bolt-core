@@ -1,7 +1,8 @@
 <?php
 	namespace Bolt;
 
-	use \Bolt\Exceptions\Framework as Exception;
+	use Bolt\Exceptions\Codes\Framework as Codes;
+	use Bolt\Exceptions\Framework as Exception;
 
 	abstract class Base
 	{
@@ -86,7 +87,7 @@
 
 			if (property_exists($class, $name) === false)
 			{
-				throw new Exception("Property `" . $name . "` not found on class `" . $class . "`", 1);
+				throw new Exception("Property `" . $name . "` not found on class `" . $class . "`", Codes::PROPERTY_NOT_FOUND);
 			}
 
 			if ($args == array())
