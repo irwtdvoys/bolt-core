@@ -50,6 +50,11 @@
 			return curl_setopt($this->resource, $option, $value);
 		}
 
+		public function get($option)
+		{
+			return $this->options[$option];
+		}
+
 		public function fetch($options = null)
 		{
 			$this->open($options);
