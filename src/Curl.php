@@ -16,6 +16,8 @@
 			$this->resource = curl_init();
 			$this->options = array(); // reset options store
 
+			$this->set(CURLOPT_HEADER, true); // default headers to on
+
 			if (is_array($options) === true)
 			{
 				foreach ($options as $option => $value)
