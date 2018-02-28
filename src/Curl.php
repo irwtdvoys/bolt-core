@@ -14,6 +14,7 @@
 		public function open($options = null)
 		{
 			$this->resource = curl_init();
+			$this->options = array(); // reset options store
 
 			if (is_array($options) === true)
 			{
