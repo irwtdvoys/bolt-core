@@ -6,12 +6,15 @@
 	class Curl extends Http
 	{
 		private $resource = null;
+		public $options = array();
+
 		public $info;
 		public $data;
 
 		public function open($options = null)
 		{
 			$this->resource = curl_init();
+			$this->options = array(); // reset options store
 
 			if (is_array($options) === true)
 			{
@@ -43,7 +46,14 @@
 
 		public function set($option, $value)
 		{
+			$this->options[$option] = $value;
+
 			return curl_setopt($this->resource, $option, $value);
+		}
+
+		public function get($option)
+		{
+			return $this->options[$option];
 		}
 
 		public function fetch($options = null)
