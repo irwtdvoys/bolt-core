@@ -6,6 +6,8 @@
 	class Curl extends Http
 	{
 		private $resource = null;
+		public $options = array();
+
 		public $info;
 		public $data;
 
@@ -43,6 +45,8 @@
 
 		public function set($option, $value)
 		{
+			$this->options[$option] = $value;
+
 			return curl_setopt($this->resource, $option, $value);
 		}
 
