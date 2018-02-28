@@ -60,7 +60,44 @@
 		{
 			$this->open($options);
 			$this->execute();
-			$result = new Curl\Response($this->info['http_code'], $this->parseBody($this->data, $this->info['content_type']));
+
+			if ($this->get(CURLOPT_HEADER) == true)
+			{
+				# Headers regex
+				$pattern = "#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims";
+
+				# Extract headers from response
+				preg_match_all($pattern, $this->data, $matches);
+				$headers_string = array_pop($matches[0]);
+				$headers = explode("\r\n", str_replace("\r\n\r\n", '', $headers_string));
+
+				# Remove headers from the response body
+				$body = str_replace($headers_string, '', $this->data);
+
+				# Extract the version and status from the first header
+				$version_and_status = array_shift($headers);
+				preg_match("#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#", $version_and_status, $matches);
+
+				$parsed = array();
+
+				$parsed['http-version'] = $matches[1];
+				$parsed['status-code'] = $matches[2];
+				$parsed['status'] = $matches[2] . ' ' . $matches[3];
+
+				# Convert headers into an associative array
+				foreach ($headers as $header)
+				{
+					preg_match('#(.*?)\:\s(.*)#', $header, $matches);
+					$parsed[strtolower($matches[1])] = $matches[2];
+				}
+			}
+			else
+			{
+				$body = $this->data;
+				$parsed = null;
+			}
+
+			$result = new Curl\Response($this->info['http_code'], $this->parseBody($body, $this->info['content_type']), $parsed);
 			$this->close();
 
 			return $result;
