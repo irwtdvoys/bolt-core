@@ -164,7 +164,7 @@
 				$SQL = "SELECT * FROM " . $table . " WHERE " . $key . " = " . $id;
 				$results = $this->query($SQL, array(), true, $style, $argument);
 			}
-			elseif ($queryType == "UPDATE" && $return === true)
+			elseif (in_array($queryType, array("UPDATE", "DELETE")) && $return === true)
 			{
 				$results = array(
 					"success" => ($results === false) ? false : true,
