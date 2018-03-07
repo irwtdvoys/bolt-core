@@ -34,7 +34,7 @@
 				}
 			}
 
-			return $total / $count;
+			return ($total === 0 || $count === 0) ? 0 : $total / $count;
 		}
 
 		public static function median($numbers)
