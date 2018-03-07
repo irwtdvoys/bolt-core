@@ -14,5 +14,66 @@
 
 			return $result;
 		}
+
+		public static function average($numbers)
+		{
+			return self::mean($numbers);
+		}
+
+		public static function mean($numbers)
+		{
+			$count = 0;
+			$total = 0;
+
+			foreach ($numbers as $next)
+			{
+				if (is_numeric($next))
+				{
+					$total += $next;
+					$count++;
+				}
+			}
+
+			return $total / $count;
+		}
+
+		public static function median($numbers)
+		{
+			asort($numbers);
+
+			$data = (array_values($numbers));
+			$point = (count($data) - 1) / 2;
+
+			if (is_integer($point))
+			{
+				return $data[$point];
+			}
+
+			$points = array(
+				$data[(integer)floor($point)],
+				$data[(integer)ceil($point)]
+			);
+
+			return self::mean($points);
+		}
+
+		public static function mode($numbers)
+		{
+			$counts = array_count_values($numbers);
+
+			$max = max($counts);
+
+			$results = array();
+
+			foreach ($counts as $key => $value)
+			{
+				if ($value === $max)
+				{
+					$results[] = $key;
+				}
+			}
+
+			return count($results) === 1 ? $results[0] : $results;
+		}
 	}
 ?>
