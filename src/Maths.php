@@ -56,5 +56,24 @@
 
 			return self::mean($points);
 		}
+
+		public static function mode($numbers)
+		{
+			$counts = array_count_values($numbers);
+
+			$max = max($counts);
+
+			$results = array();
+
+			foreach ($counts as $key => $value)
+			{
+				if ($value === $max)
+				{
+					$results[] = $key;
+				}
+			}
+
+			return count($results) === 1 ? $results[0] : $results;
+		}
 	}
 ?>
