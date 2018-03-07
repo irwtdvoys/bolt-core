@@ -14,5 +14,27 @@
 
 			return $result;
 		}
+
+		public static function average($numbers)
+		{
+			return self::mean($numbers);
+		}
+
+		public static function mean($numbers)
+		{
+			$count = 0;
+			$total = 0;
+
+			foreach ($numbers as $next)
+			{
+				if (is_numeric($next))
+				{
+					$total += $next;
+					$count++;
+				}
+			}
+
+			return $total / $count;
+		}
 	}
 ?>
