@@ -36,5 +36,25 @@
 
 			return $total / $count;
 		}
+
+		public static function median($numbers)
+		{
+			asort($numbers);
+
+			$data = (array_values($numbers));
+			$point = (count($data) - 1) / 2;
+
+			if (is_integer($point))
+			{
+				return $data[$point];
+			}
+
+			$points = array(
+				$data[(integer)floor($point)],
+				$data[(integer)ceil($point)]
+			);
+
+			return self::mean($points);
+		}
 	}
 ?>
