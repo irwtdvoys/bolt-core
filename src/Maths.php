@@ -3,6 +3,13 @@
 
 	class Maths
 	{
+		public static function _double($value, $iterations = 1)
+		{
+			trigger_error("Deprecated method `_double` called, use `double` instead", E_USER_NOTICE);
+
+			return self::double($value, $iterations);
+		}
+
 		public static function double($value, $iterations = 1)
 		{
 			$result = $value;
