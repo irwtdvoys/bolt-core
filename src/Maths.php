@@ -3,13 +3,13 @@
 
 	class Maths
 	{
-		public static function _double($value, $iterations = 1)
+		public static function double($value, $iterations = 1)
 		{
 			$result = $value;
 
 			if ($iterations > 0)
 			{
-				$result = self::_double($result * 2, ($iterations - 1));
+				$result = self::double($result * 2, ($iterations - 1));
 			}
 
 			return $result;
