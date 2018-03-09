@@ -5,11 +5,18 @@
 	{
 		public static function _double($value, $iterations = 1)
 		{
+			trigger_error("Deprecated method `_double` called, use `double` instead", E_USER_NOTICE);
+
+			return self::double($value, $iterations);
+		}
+
+		public static function double($value, $iterations = 1)
+		{
 			$result = $value;
 
 			if ($iterations > 0)
 			{
-				$result = self::_double($result * 2, ($iterations - 1));
+				$result = self::double($result * 2, ($iterations - 1));
 			}
 
 			return $result;
