@@ -1,7 +1,9 @@
 <?php
 	namespace Bolt\Curl;
 
-	class Response extends \Bolt\Http
+	use Bolt\Http;
+
+	class Response extends Http
 	{
 		public $code;
 		public $status;
