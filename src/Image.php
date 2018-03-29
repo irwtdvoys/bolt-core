@@ -22,20 +22,24 @@
 					$this->image = imagecreatefrompng($filename);
 					break;
 			}
+
+			return ($this->image !== false) ? true : false;
 		}
 
 		public function save($filename, $permissions = null)
 		{
+			$result = false;
+
 			switch ($this->info['mime'])
 			{
 				case "image/jpeg":
-					imagejpeg($this->image, $filename);
+					$result = imagejpeg($this->image, $filename);
 					break;
 				case "image/gif":
-					imagegif($this->image, $filename);
+					$result = imagegif($this->image, $filename);
 					break;
 				case "image/png":
-					imagepng($this->image, $filename);
+					$result = imagepng($this->image, $filename);
 					break;
 			}
 
@@ -43,6 +47,8 @@
 			{
 				chmod($filename, $permissions);
 			}
+
+			return $result;
 		}
 
 		public function newImage($width, $height, $mime)
@@ -131,6 +137,7 @@
 		public function getDimension($type)
 		{
 			$result = ($type == "x") ? $this->info[0] : $this->info[1];
+
 			return $result;
 		}
 

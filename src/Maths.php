@@ -82,5 +82,10 @@
 
 			return count($results) === 1 ? $results[0] : $results;
 		}
+
+		public static function tau()
+		{
+			return 2 * pi();
+		}
 	}
 ?>
