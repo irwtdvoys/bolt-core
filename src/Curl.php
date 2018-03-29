@@ -3,7 +3,7 @@
 
 	use Bolt\Exceptions\Curl as Exception;
 
-	class Curl extends Http
+	class Curl extends Base
 	{
 		private $resource = null;
 		public $options = array();
