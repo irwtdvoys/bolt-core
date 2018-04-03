@@ -51,7 +51,16 @@
 		protected function getProperties()
 		{
 			$reflection = new \ReflectionClass($this->className());
-			return $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
+			$properties = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
+
+			$results = array();
+
+			foreach ($properties as $property)
+			{
+				$results[] = $property->name;
+			}
+
+			return $results;
 		}
 
 		public function className($full = true)
