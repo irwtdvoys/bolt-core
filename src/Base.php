@@ -117,7 +117,7 @@
 
 			foreach ($properties as $property)
 			{
-				$results[$property->name] = $this->{$property->name}();
+				$results[$property] = $this->{$property}();
 			}
 
 			return $results;
