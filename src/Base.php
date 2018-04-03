@@ -24,22 +24,22 @@
 				{
 					if (is_array($data))
 					{
-						$value = isset($data[$property->name]) ? $data[$property->name] : null;
+						$value = isset($data[$property]) ? $data[$property] : null;
 					}
 					else
 					{
-						$value = isset($data->{$property->name}) ? $data->{$property->name} : null;
+						$value = isset($data->{$property}) ? $data->{$property} : null;
 					}
 
 					if ($value !== null)
 					{
-						if ($this->{$property->name} instanceof Base)
+						if ($this->{$property} instanceof Base)
 						{
-							$value = $this->{$property->name}->populate($value);
+							$value = $this->{$property}->populate($value);
 						}
 						else
 						{
-							$this->{$property->name}($value);
+							$this->{$property}($value);
 						}
 					}
 				}
