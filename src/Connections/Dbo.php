@@ -264,5 +264,15 @@
 
 			return $query;
 		}
+
+		public function transactionStart()
+		{
+			$this->connection->beginTransaction();
+		}
+
+		public function transactionEnd()
+		{
+			$this->connection->commit();
+		}
 	}
 ?>
