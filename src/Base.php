@@ -72,7 +72,7 @@
 			if ($full === false)
 			{
 				$namespace = explode("\\", $className);
-				$className = $namespace[count($namespace) - 1];
+				$className = array_pop($namespace);
 			}
 
 			return $className;
