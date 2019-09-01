@@ -108,7 +108,7 @@
 
 			$this->$name = $args[0];
 
-			return true;
+			return $this;
 		}
 
 		public function __debugInfox()
