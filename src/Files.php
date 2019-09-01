@@ -1,7 +1,8 @@
 <?php
 	namespace Bolt;
 
-	use \Bolt\Exceptions\Codes\Files as Codes;
+	use Bolt\Exceptions\Codes\Files as Codes;
+	use Bolt\Exceptions\Files as Exception;
 
 	class Files
 	{
@@ -14,7 +15,7 @@
 
 			if ($this->resource !== null)
 			{
-				throw new Exceptions\Files(Codes::FILE_ALREADY_OPEN);
+				throw new Exception(Codes::FILE_ALREADY_OPEN);
 			}
 
 			if (file_exists($filename) === false)
@@ -55,7 +56,7 @@
 		{
 			if ($this->resource === null)
 			{
-				throw new Exceptions\Files(Codes::FILE_NOT_OPEN);
+				throw new Exception(Codes::FILE_NOT_OPEN);
 			}
 
 			if (fclose($this->resource) === true)
@@ -79,7 +80,7 @@
 		{
 			if ($this->resource === null)
 			{
-				throw new Exceptions\Files(Codes::FILE_NOT_OPEN);
+				throw new Exception(Codes::FILE_NOT_OPEN);
 			}
 
 			if ($length == null)
@@ -94,7 +95,7 @@
 		{
 			if ($this->resource === null)
 			{
-				throw new Exceptions\Files(Codes::FILE_NOT_OPEN);
+				throw new Exception(Codes::FILE_NOT_OPEN);
 			}
 
 			return (fseek($this->resource, $position, $type) == 0) ? true : false;
@@ -104,7 +105,7 @@
 		{
 			if ($this->resource !== null)
 			{
-				throw new Exceptions\Files(Codes::FILE_ALREADY_OPEN);
+				throw new Exception(Codes::FILE_ALREADY_OPEN);
 			}
 
 			$this->open($filename, "w+", $permissions);
@@ -118,7 +119,7 @@
 		{
 			if ($this->resource !== null)
 			{
-				throw new Exceptions\Files(Codes::FILE_ALREADY_OPEN);
+				throw new Exception(Codes::FILE_ALREADY_OPEN);
 			}
 
 			$this->open($filename, "r");

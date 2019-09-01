@@ -1,6 +1,8 @@
 <?php
 	namespace Bolt;
 
+	use ReflectionClass;
+
 	abstract class Enum
 	{
 		public function expose()
@@ -10,7 +12,7 @@
 
 		protected function identifiers()
 		{
-			$refl = new \ReflectionClass($this);
+			$refl = new ReflectionClass($this);
 			$constants = $refl->getConstants();
 			asort($constants);
 			return $constants;

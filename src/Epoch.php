@@ -1,6 +1,9 @@
 <?php
 	namespace Bolt;
 
+	use DateTime;
+	use DateTimeZone;
+
 	class Epoch
 	{
 		public static function time($precision = "s")
@@ -35,7 +38,7 @@
 				$timestamp = date("Y-m-d H:i:s", (int)$timestamp);
 			}
 
-			$dtObject = new \DateTime($timestamp);
+			$dtObject = new DateTime($timestamp);
 
 			if ($zone === true)
 			{
@@ -52,7 +55,8 @@
 
 		static private function shift($dtObject, $zone)
 		{
-			$dtObject->setTimeZone(new \DateTimeZone($zone));
+			$dtObject->setTimeZone(new DateTimeZone($zone));
+
 			return $dtObject;
 		}
 	}
