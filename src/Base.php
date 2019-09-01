@@ -3,6 +3,8 @@
 
 	use Bolt\Exceptions\Codes\Framework as Codes;
 	use Bolt\Exceptions\Framework as Exception;
+	use ReflectionClass;
+	use ReflectionProperty;
 
 	abstract class Base
 	{
@@ -50,8 +52,8 @@
 
 		protected function getProperties()
 		{
-			$reflection = new \ReflectionClass($this->className());
-			$properties = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
+			$reflection = new ReflectionClass($this->className());
+			$properties = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
 
 			$results = array();
 
