@@ -101,7 +101,7 @@
 				throw new Exception("Property `" . $name . "` not found on class `" . $class . "`", Codes::PROPERTY_NOT_FOUND);
 			}
 
-			if ($args == array())
+			if ($args === array())
 			{
 				return $this->$name;
 			}
