@@ -5,16 +5,17 @@
 
 	abstract class Enum
 	{
-		public function expose()
+		public static function expose()
 		{
-			return $this->identifiers();
+			return self::identifiers();
 		}
 
-		protected function identifiers()
+		protected static function identifiers()
 		{
-			$refl = new ReflectionClass($this);
+			$refl = new ReflectionClass(get_called_class());
 			$constants = $refl->getConstants();
 			asort($constants);
+
 			return $constants;
 		}
 	}
