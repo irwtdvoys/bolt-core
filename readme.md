@@ -1,1 +1,1 @@
-# bolt-core (v0.7.1)
+# bolt-core (v0.8.0)
