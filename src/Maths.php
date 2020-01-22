@@ -22,12 +22,12 @@
 			return $result;
 		}
 
-		public static function average($numbers)
+		public static function average($numbers): float
 		{
 			return self::mean($numbers);
 		}
 
-		public static function mean($numbers)
+		public static function mean(array $numbers): float
 		{
 			$count = 0;
 			$total = 0;
@@ -83,7 +83,7 @@
 			return count($results) === 1 ? $results[0] : $results;
 		}
 
-		public static function tau()
+		public static function tau(): float
 		{
 			return 2 * pi();
 		}
