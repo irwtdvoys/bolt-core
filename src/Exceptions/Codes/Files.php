@@ -7,5 +7,6 @@
 	{
 		const FILE_NOT_OPEN = 1;
 		const FILE_ALREADY_OPEN = 2;
+		const FILE_DOES_NOT_EXIST = 3;
 	}
 ?>

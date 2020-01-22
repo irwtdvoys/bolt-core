@@ -22,7 +22,7 @@
 			{
 				if ($mode == "r" || $mode == "r+")
 				{
-					return false;
+					throw new Exception(Codes::FILE_DOES_NOT_EXIST);
 				}
 				else
 				{
