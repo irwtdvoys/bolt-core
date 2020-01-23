@@ -1,6 +1,8 @@
 <?php
 	namespace Bolt;
 
+	use Bolt\Http\Codes;
+
 	class Http extends Base
 	{
 		public function groupLookup($code)
@@ -37,176 +39,176 @@
 		{
 			switch ($code)
 			{
-				case 100:
+				case Codes::CONTINUE:
 					$result = "Continue";
 					break;
-				case 101:
+				case Codes::SWITCHING_PROTOCOLS:
 					$result = "Switching Protocols";
 					break;
-				case 102:
+				case Codes::PROCESSING:
 					$result = "Processing";
 					break;
 
-				case 200:
+				case Codes::OK:
 					$result = "OK";
 					break;
-				case 201:
+				case Codes::CREATED:
 					$result = "Created";
 					break;
-				case 202:
+				case Codes::ACCEPTED:
 					$result = "Accepted";
 					break;
-				case 203:
+				case Codes::NON_AUTHORITATIVE_INFORMATION:
 					$result = "Non-Authoritative Information";
 					break;
-				case 204:
+				case Codes::NO_CONTENT:
 					$result = "No Content";
 					break;
-				case 205:
+				case Codes::RESET_CONTENT:
 					$result = "Reset Content";
 					break;
-				case 206:
+				case Codes::PARTIAL_CONTENT:
 					$result = "Partial Content";
 					break;
 
-				case 300:
+				case Codes::MULTIPLE_CHOICES:
 					$result = "Multiple Choices";
 					break;
-				case 301:
+				case Codes::MOVED_PERMANENTLY:
 					$result = "Moved Permanently";
 					break;
-				case 302:
+				case Codes::FOUND:
 					$result = "Found";
 					break;
-				case 303:
+				case Codes::SEE_OTHER:
 					$result = "See Other";
 					break;
-				case 304:
+				case Codes::NOT_MODIFIED:
 					$result = "Not Modified";
 					break;
-				case 305:
+				case Codes::USE_PROXY:
 					$result = "Use Proxy";
 					break;
-				case 306:
+				case Codes::SWITCH_PROXY:
 					$result = "Switch Proxy";
 					break;
-				case 307:
+				case Codes::TEMPORARY_REDIRECT:
 					$result = "Temporary Redirect";
 					break;
-				case 308:
+				case Codes::PERMANENT_REDIRECT:
 					$result = "Permanent Redirect";
 					break;
 
-				case 400:
+				case Codes::BAD_REQUEST:
 					$result = "Bad Request";
 					break;
-				case 401:
+				case Codes::UNAUTHORIZED:
 					$result = "Unauthorized";
 					break;
-				case 402:
+				case Codes::PAYMENT_REQUIRED:
 					$result = "Payment Required";
 					break;
-				case 403:
+				case Codes::FORBIDDEN:
 					$result = "Forbidden";
 					break;
-				case 404:
+				case Codes::NOT_FOUND:
 					$result = "Not Found";
 					break;
-				case 405:
+				case Codes::METHOD_NOT_ALLOWED:
 					$result = "Method Not Allowed";
 					break;
-				case 406:
+				case Codes::NOT_ACCEPTABLE:
 					$result = "Not Acceptable";
 					break;
-				case 407:
+				case Codes::PROXY_AUTHENTICATION_REQUIRED:
 					$result = "Proxy Authentication Required";
 					break;
-				case 408:
+				case Codes::REQUEST_TIMEOUT:
 					$result = "Request Timeout";
 					break;
-				case 409:
+				case Codes::CONFLICT:
 					$result = "Conflict";
 					break;
-				case 410:
+				case Codes::GONE:
 					$result = "Gone";
 					break;
-				case 411:
+				case Codes::LENGTH_REQUIRED:
 					$result = "Length Required";
 					break;
-				case 412:
+				case Codes::PRECONDITION_FAILED:
 					$result = "Precondition Failed";
 					break;
-				case 413:
+				case Codes::REQUEST_ENTITY_TOO_LARGE:
 					$result = "Request Entity Too Large";
 					break;
-				case 414:
+				case Codes::REQUEST_URI_TOO_LONG:
 					$result = "Request-URI Too Long";
 					break;
-				case 415:
+				case Codes::UNSUPPORTED_MEDIA_TYPE:
 					$result = "Unsupported Media Type";
 					break;
-				case 416:
+				case Codes::REQUESTED_RANGE_NOT_SATISFIABLE:
 					$result = "Requested Range Not Satisfiable";
 					break;
-				case 417:
+				case Codes::EXPECTATION_FAILED:
 					$result = "Expectation Failed";
 					break;
-				case 419:
+				case Codes::AUTHENTICATION_TIMEOUT:
 					$result = "Authentication Timeout";
 					break;
-				case 422:
+				case Codes::UNPROCESSABLE_ENTITY:
 					$result = "Unprocessable Entity";
 					break;
-				case 423:
+				case Codes::LOCKED:
 					$result = "Locked";
 					break;
-				case 426:
+				case Codes::UPGRADE_REQUIRED:
 					$result = "Upgrade Required";
 					break;
-				case 428:
+				case Codes::PRECONDITION_REQUIRED:
 					$result = "Precondition Required";
 					break;
-				case 429:
+				case Codes::TOO_MANY_REQUESTS:
 					$result = "Too Many Requests";
 					break;
-				case 431:
+				case Codes::REQUEST_HEADER_FIELDS_TOO_LARGE:
 					$result = "Request Header Fields Too Large";
 					break;
 
-				case 500:
+				case Codes::INTERNAL_SERVER_ERROR:
 					$result = "Internal Server Error";
 					break;
-				case 501:
+				case Codes::NOT_IMPLEMENTED:
 					$result = "Not Implemented";
 					break;
-				case 502:
+				case Codes::BAD_GATEWAY:
 					$result = "Bad Gateway";
 					break;
-				case 503:
+				case Codes::SERVICE_UNAVAILABLE:
 					$result = "Service Unavailable";
 					break;
-				case 504:
+				case Codes::GATEWAY_TIMEOUT:
 					$result = "Gateway Timeout";
 					break;
-				case 505:
+				case Codes::HTTP_VERSION_NOT_SUPPORTED:
 					$result = "HTTP Version Not Supported";
 					break;
-				case 506:
+				case Codes::VARIANT_ALSO_NEGOTIATES:
 					$result = "Variant Also Negotiates";
 					break;
-				case 507:
+				case Codes::INSUFFICIENT_STORAGE:
 					$result = "Insufficient Storage";
 					break;
-				case 508:
+				case Codes::LOOP_DETECTED:
 					$result = "Loop Detected";
 					break;
-				case 509:
+				case Codes::BANDWIDTH_LIMIT_EXCEEDED:
 					$result = "Bandwidth Limit Exceeded";
 					break;
-				case 510:
+				case Codes::NOT_EXTENDED:
 					$result = "Not Extended";
 					break;
-				case 511:
+				case Codes::NETWORK_AUTHENTICATION_REQUIRED:
 					$result = "Network Authentication Required";
 					break;
 
