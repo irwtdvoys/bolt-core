@@ -72,10 +72,10 @@
 
 			if ($this->get(CURLOPT_HEADER) === true)
 			{
-				# Headers regex
+				// Headers regex
 				$pattern = "/^HTTP\/(?'version'\d\.?\d?)\s(?'code'\d{3})\s?(?'message'[\w ]*)\X*\R\R/ims";
 
-				# Extract headers from response
+				// Extract headers from response
 				preg_match($pattern, $this->data, $matches);
 
 				$headersString = $matches[0];
@@ -87,16 +87,16 @@
 
 				$headers = explode(PHP_EOL, trim($headersString));
 
-				# Remove headers from the response body
+				// Remove headers from the response body
 				$body = str_replace($headersString, '', $this->data);
 
-				# Extract the version and status from the first header
+				// Extract the version and status from the first header
 				array_shift($headers);
 				$parsed['http-version'] = $matches['version'];
 				$parsed['status-code'] = $matches['code'];
 				$parsed['status'] = $matches['code'] . ' ' . $matches['message'];
 
-				# Convert headers into an associative array
+				// Convert headers into an associative array
 				foreach ($headers as $header)
 				{
 					preg_match("/(?'key'.*?)\:\s(?'value'[\S ]+)/i", $header, $matches);
