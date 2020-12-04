@@ -9,7 +9,7 @@
 		public $resource = null;
 		public $stats;
 
-		public function open($filename, $mode = "w", $permissions = 0777)
+		public function open(string $filename, string $mode = "w", int $permissions = 0777): self
 		{
 			$created = false;
 
@@ -52,7 +52,7 @@
 			return $this;
 		}
 
-		public function close()
+		public function close(): self
 		{
 			if ($this->resource === null)
 			{
@@ -68,7 +68,7 @@
 			return $this;
 		}
 
-		public function write($content)
+		public function write(string $content): self
 		{
 			$result = fwrite($this->resource, $content);
 
@@ -80,7 +80,7 @@
 			return $this;
 		}
 
-		public function read($length = null)
+		public function read(int $length = 0): string
 		{
 			if ($this->resource === null)
 			{
@@ -102,31 +102,32 @@
 			return $content;
 		}
 
-		public function seek($position, $type = SEEK_SET)
+		public function seek(int $position, int $type = SEEK_SET): bool
 		{
 			if ($this->resource === null)
 			{
 				throw new Exception(Codes::FILE_NOT_OPEN);
 			}
 
-			return (fseek($this->resource, $position, $type) == 0) ? true : false;
+			return fseek($this->resource, $position, $type) === 0;
 		}
 
-		public function create($filename, $content, $permissions = 0777)
+		public function create(string $filename, string $content, int $permissions = 0777): self
 		{
 			if ($this->resource !== null)
 			{
 				throw new Exception(Codes::FILE_ALREADY_OPEN);
 			}
 
-			$this->open($filename, "w+", $permissions);
-			$this->write($content);
-			$this->close();
+			$this
+				->open($filename, "w+", $permissions)
+				->write($content)
+				->close();
 
 			return $this;
 		}
 
-		public function load($filename)
+		public function load(string $filename): string
 		{
 			if ($this->resource !== null)
 			{
