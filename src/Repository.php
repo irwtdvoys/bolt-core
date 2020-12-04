@@ -34,7 +34,7 @@
 
 		public function __call($name, $args)
 		{
-			return $this->adapter->{$name}();
+			return $this->adapter->{$name}($args);
 		}
 	}
 ?>
