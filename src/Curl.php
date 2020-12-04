@@ -11,25 +11,22 @@
 		public $info;
 		public $data;
 
-		public function open($options = null)
+		public function open(array $options): self
 		{
 			$this->resource = curl_init();
 			$this->options = array(); // reset options store
 
 			$this->set(CURLOPT_HEADER, true); // default headers to on
 
-			if (is_array($options) === true)
+			foreach ($options as $option => $value)
 			{
-				foreach ($options as $option => $value)
-				{
-					$this->set($option, $value);
-				}
+				$this->set($option, $value);
 			}
 
 			return $this;
 		}
 
-		public function close()
+		public function close(): self
 		{
 			curl_close($this->resource);
 			$this->resource = false;
@@ -39,7 +36,7 @@
 			return $this;
 		}
 
-		public function execute()
+		public function execute(): self
 		{
 			$this->data = curl_exec($this->resource);
 			$this->info = curl_getinfo($this->resource);
@@ -52,19 +49,19 @@
 			return $this;
 		}
 
-		public function set($option, $value)
+		public function set(int $option, $value): bool
 		{
 			$this->options[$option] = $value;
 
 			return curl_setopt($this->resource, $option, $value);
 		}
 
-		public function get($option)
+		public function get(int $option)
 		{
 			return $this->options[$option];
 		}
 
-		public function fetch($options = null)
+		public function fetch(array $options): Response
 		{
 			$this->open($options);
 			$this->execute();
@@ -112,12 +109,12 @@
 			return $result;
 		}
 
-		public function error()
+		public function error(): int
 		{
 			return curl_errno($this->resource);
 		}
 
-		private function parseBody($body, $contentType)
+		private function parseBody(string $body, string $contentType)
 		{
 			switch ($contentType)
 			{
