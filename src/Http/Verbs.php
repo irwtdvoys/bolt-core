@@ -15,7 +15,7 @@
 		const TRACE = "TRACE";
 		const PATCH = "PATCH";
 
-		public static function list()
+		public static function list(): array
 		{
 			return array_values(parent::expose());
 		}

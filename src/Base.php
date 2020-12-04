@@ -50,7 +50,7 @@
 			return true;
 		}
 
-		protected function getProperties()
+		protected function getProperties(): array
 		{
 			$reflection = new ReflectionClass($this->className());
 			$properties = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
@@ -65,7 +65,7 @@
 			return $results;
 		}
 
-		public function className($full = true)
+		public function className(bool $full = true): string
 		{
 			$className = get_class($this);
 

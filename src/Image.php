@@ -1,12 +1,14 @@
 <?php
 	namespace Bolt;
 
+	use Exception;
+
 	class Image
 	{
 		public $image;
 		public $info;
 
-		public function load($filename)
+		public function load(string $filename): self
 		{
 			$this->info = getimagesize($filename);
 
@@ -23,13 +25,16 @@
 					break;
 			}
 
-			return ($this->image !== false) ? true : false;
+			if ($this->image === false)
+			{
+				throw new Exception("Image not loaded");
+			}
+
+			return $this;
 		}
 
-		public function save($filename, $permissions = null)
+		public function save(string $filename, int $permissions = null): self
 		{
-			$result = false;
-
 			switch ($this->info['mime'])
 			{
 				case "image/jpeg":
@@ -41,6 +46,14 @@
 				case "image/png":
 					$result = imagepng($this->image, $filename);
 					break;
+				default:
+					throw new Exception("Unable to save to that image type");
+					break;
+			}
+
+			if ($result === false)
+			{
+				throw new Exception("Image not saved");
 			}
 
 			if ($permissions != null)
@@ -48,10 +61,10 @@
 				chmod($filename, $permissions);
 			}
 
-			return $result;
+			return $this;
 		}
 
-		public function newImage($width, $height, $mime)
+		public function newImage(int $width, int $height, string $mime)
 		{
 			$this->image = imagecreatetruecolor($width, $height);
 			#imagealphablending($this->image, false);
@@ -63,7 +76,7 @@
 			$this->info['mime'] = $mime;
 		}
 
-		public function display()
+		public function display(): void
 		{
 			header("Content-type: " . $this->info['mime']);
 
@@ -83,21 +96,25 @@
 			}
 		}
 
-		public function resizeToWidth($width)
+		public function resizeToWidth(int $width): self
 		{
 			$ratio = $width / $this->getDimension("x");
 			$height = $this->getDimension("y") * $ratio;
 			$this->resize($width, $height);
+
+			return $this;
 		}
 
-		public function resizeToHeight($height)
+		public function resizeToHeight(int $height): self
 		{
 			$ratio = $height / $this->getDimension("y");
 			$width = $this->getDimension("x") * $ratio;
 			$this->resize($width, $height);
+
+			return $this;
 		}
 
-		public function ratioResize($width, $height)
+		public function ratioResize(int $width, int $height): self
 		{
 			$imageRatio = $this->ratio();
 			$resizeRatio = $width / $height;
@@ -110,9 +127,11 @@
 			{
 				$this->resizeToHeight($height);
 			}
+
+			return $this;
 		}
 
-		public function resize($width, $height)
+		public function resize(int $width, int $height): self
 		{
 			$resizedImage = imagecreatetruecolor($width, $height);
 
@@ -124,24 +143,28 @@
 
 			$this->info[0] = $width;
 			$this->info[1] = $height;
+
+			return $this;
 		}
 
-		public function scale($percentage)
+		public function scale(int $percentage): self
 		{
 			$width = $this->getDimension("x") * ($percentage / 100);
 			$height = $this->getDimension("y") * ($percentage / 100);
 
 			$this->resize($width, $height);
+
+			return $this;
 		}
 
-		public function getDimension($type)
+		public function getDimension(string $type)
 		{
 			$result = ($type == "x") ? $this->info[0] : $this->info[1];
 
 			return $result;
 		}
 
-		public function crop($top, $right, $bottom, $left, $colour = null)
+		public function crop(int $top, int $right, int $bottom, int $left, int $colour = null): self
 		{
 			$original = $this->image;
 			$x = $this->getDimension("x");
@@ -159,9 +182,11 @@
 
 			imagefill($this->image, 0, 0, $colour);
 			imagecopy($this->image, $original, $left, $top, 0, 0, $x, $y);
+
+			return $this;
 		}
 
-		public function ratio()
+		public function ratio(): float
 		{
 			return $this->getDimension("x") / $this->getDimension("y");
 		}
