@@ -7,10 +7,10 @@
 	class Curl extends Base
 	{
 		private $resource = null;
-		public $options = array();
+		public array $options = array();
 
-		public $info;
-		public $data;
+		public ?array $info = null;
+		public ?string $data = null;
 
 		public function open(array $options): self
 		{

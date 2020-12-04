@@ -3,24 +3,24 @@
 
 	class Dsv
 	{
-		public $delimiter;
-		public $enclosure;
+		public string $delimiter;
+		public string $enclosure;
 
-		public $headers = array();
-		public $data = array();
+		public array $headers = array();
+		public array $data = array();
 
 		public $stream;
 
-		protected $files;
+		protected Files $files;
 
-		public function __construct($delimiter = ",", $enclosure = '"', $object = null)
+		public function __construct(string $delimiter = ",", string $enclosure = '"', array $data = null)
 		{
 			$this->delimiter = $delimiter;
 			$this->enclosure = $enclosure;
 
-			if ($object !== null)
+			if ($data !== null)
 			{
-				$this->addData($object);
+				$this->addData($data);
 			}
 
 			$this->files = new Files();
@@ -31,36 +31,46 @@
 			fclose($this->stream);
 		}
 
-		public function addData($records)
+		public function addData(array $records): self
 		{
 			$this->addHeaders(array_keys(reset($records)));
 			$this->addContent($records);
+
+			return $this;
 		}
 
-		public function addHeaders($record)
+		public function addHeaders(array $record): self
 		{
 			$this->headers = $record;
+
+			return $this;
 		}
 
-		public function addContent($records)
+		public function addContent(array $records): self
 		{
 			foreach ($records as $record)
 			{
 				$this->data[] = $record;
 			}
+
+			return $this;
 		}
 
-		public function addRow($record)
+		public function addRow(array $record): self
 		{
 			$this->data[] = $record;
+
+			return $this;
 		}
 
-		public function writeRow($record)
+		public function writeRow(array $record): self
 		{
 			fputcsv($this->stream, $record, $this->delimiter, $this->enclosure);
+
+			return $this;
 		}
 
-		public function generate()
+		public function generate(): self
 		{
 			$this->writeRow($this->headers);
 
@@ -68,9 +78,11 @@
 			{
 				$this->writeRow($record);
 			}
+
+			return $this;
 		}
 
-		public function load($filename)
+		public function load(string $filename): self
 		{
 			$this->files->open($filename, "r");
 
@@ -91,16 +103,20 @@
 			}
 
 			$this->files->close();
+
+			return $this;
 		}
 
-		public function save($filename = "temp.csv")
+		public function save(string $filename = "temp.csv"): self
 		{
 			$this->stream = fopen(ROOT_SERVER . "files/" . $filename, "x");
 			$this->generate();
 			fclose($this->stream);
+
+			return $this;
 		}
 
-		public function output($filename = "export.csv")
+		public function output(string $filename = "export.csv"): void
 		{
 			header("Content-type: application/csv");
 			header("Content-Disposition: attachment; filename=" . $filename);

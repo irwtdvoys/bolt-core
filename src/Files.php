@@ -7,7 +7,7 @@
 	class Files
 	{
 		public $resource = null;
-		public $stats;
+		public array $stats;
 
 		public function open(string $filename, string $mode = "w", int $permissions = 0777): self
 		{
