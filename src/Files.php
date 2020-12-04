@@ -49,7 +49,7 @@
 				$this->stats = fstat($this->resource);
 			}
 
-			return true;
+			return $this;
 		}
 
 		public function close()
@@ -65,7 +65,7 @@
 				$this->stats = null;
 			}
 
-			return true;
+			return $this;
 		}
 
 		public function write($content)
@@ -76,6 +76,8 @@
 			{
 				throw new Exception(Codes::ERROR_WRITING_TO_FILE);
 			}
+
+			return $this;
 		}
 
 		public function read($length = null)
@@ -121,7 +123,7 @@
 			$this->write($content);
 			$this->close();
 
-			return true;
+			return $this;
 		}
 
 		public function load($filename)
