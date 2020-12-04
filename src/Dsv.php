@@ -3,15 +3,15 @@
 
 	class Dsv
 	{
-		public $delimiter;
-		public $enclosure;
+		public string $delimiter;
+		public string $enclosure;
 
-		public $headers = array();
-		public $data = array();
+		public array $headers = array();
+		public array $data = array();
 
 		public $stream;
 
-		protected $files;
+		protected Files $files;
 
 		public function __construct(string $delimiter = ",", string $enclosure = '"', array $data = null)
 		{

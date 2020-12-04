@@ -3,7 +3,7 @@
 
 	class Config extends Base
 	{
-		private $constants;
+		private array $constants;
 
 		public function __construct()
 		{

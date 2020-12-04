@@ -5,13 +5,13 @@
 
 	class Dbo extends Base
 	{
-		public $type;
-		public $host;
-		public $port;
-		public $database;
-		public $username;
-		public $password;
-		public $auto;
+		public string $type;
+		public string $host;
+		public int $port;
+		public string $database;
+		public string $username;
+		public string $password;
+		public bool $auto;
 
 		public function __construct($data = null)
 		{

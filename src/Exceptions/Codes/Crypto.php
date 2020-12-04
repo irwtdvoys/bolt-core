@@ -1,7 +1,9 @@
 <?php
 	namespace Bolt\Exceptions\Codes;
 
-	class Crypto
+	use Bolt\Codes;
+
+	class Crypto extends Codes
 	{
 
 	}

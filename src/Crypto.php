@@ -3,13 +3,13 @@
 
 	class Crypto extends Base
 	{
-		protected $vector;
-		protected $vectorSize;
+		protected string $vector;
+		protected int $vectorSize;
 
-		protected $algorithm;
-		protected $key;
+		protected string $algorithm;
+		protected string $key;
 
-		protected $encoding;
+		protected bool $encoding;
 
 		public function __construct($algorithm = "aes-128-cbc", $mode = null, $key = "1234567890ABCDEFabcdef1234567890", $base64 = true, $vector = null, $auto = true)
 		{

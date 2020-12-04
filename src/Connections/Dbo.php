@@ -9,10 +9,10 @@
 
 	class Dbo extends Base implements Connection
 	{
-		protected $connection;
-		protected $statement;
+		protected PDO $connection;
+		protected PDOStatement $statement;
 
-		public $config;
+		public Config\Dbo $config;
 
 		public function __construct(Config\Dbo $config)
 		{

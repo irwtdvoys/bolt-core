@@ -6,7 +6,7 @@
 	class Image
 	{
 		public $image;
-		public $info;
+		public array $info;
 
 		public function load(string $filename): self
 		{
