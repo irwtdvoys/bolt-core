@@ -16,7 +16,7 @@
 			}
 		}
 
-		protected function populate($data)
+		protected function populate($data): self
 		{
 			$properties = $this->getProperties();
 
@@ -37,7 +37,7 @@
 					{
 						if ($this->{$property} instanceof Base)
 						{
-							$value = $this->{$property}->populate($value);
+							$this->{$property}->populate($value);
 						}
 						else
 						{
@@ -47,7 +47,7 @@
 				}
 			}
 
-			return true;
+			return $this;
 		}
 
 		protected function getProperties(): array
