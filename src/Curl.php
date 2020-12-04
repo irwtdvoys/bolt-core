@@ -1,6 +1,7 @@
 <?php
 	namespace Bolt;
 
+	use Bolt\Curl\Response;
 	use Bolt\Exceptions\Curl as Exception;
 
 	class Curl extends Base
@@ -103,7 +104,7 @@
 				}
 			}
 
-			$result = new Curl\Response($this->info['http_code'], $this->parseBody($body, $this->info['content_type']), $parsed);
+			$result = new Response($this->info['http_code'], $this->parseBody($body, $this->info['content_type']), $parsed);
 			$this->close();
 
 			return $result;
