@@ -70,9 +70,11 @@
 
 		public function write($content)
 		{
-			if (fwrite($this->resource, $content) === false)
+			$result = fwrite($this->resource, $content);
+
+			if ($result === false)
 			{
-				return false;
+				throw new Exception(Codes::ERROR_WRITING_TO_FILE);
 			}
 		}
 
@@ -88,7 +90,14 @@
 				$length = $this->stats['size'];
 			}
 
-			return fread($this->resource, $length);
+			$content = fread($this->resource, $length);
+
+			if ($content === false)
+			{
+				throw new Exception(Codes::ERROR_READING_FROM_FILE);
+			}
+
+			return $content;
 		}
 
 		public function seek($position, $type = SEEK_SET)
