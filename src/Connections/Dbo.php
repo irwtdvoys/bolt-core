@@ -1,11 +1,12 @@
 <?php
 	namespace Bolt\Connections;
 
-	use \Bolt\Base;
+	use Bolt\Base;
 	use Bolt\Exceptions\Dbo as Exception;
-	use \Bolt\Interfaces\Connection;
-	use \PDO;
+	use Bolt\Interfaces\Connection;
+	use PDO;
 	use PDOException;
+	use PDOStatement;
 
 	class Dbo extends Base implements Connection
 	{
@@ -39,7 +40,7 @@
 			return ($this->connection == "") ? "Disconnected" : "Connected";
 		}
 
-		public function connect()
+		public function connect(): self
 		{
 			$options = array();
 
@@ -66,14 +67,18 @@
 			{
 				throw new Exception($error);
 			}
+
+			return $this;
 		}
 
-		public function disconnect()
+		public function disconnect(): self
 		{
 			$this->connection(null);
+
+			return $this;
 		}
 
-		public function prepare($SQL)
+		public function prepare(string $SQL): self
 		{
 			try
 			{
@@ -83,9 +88,11 @@
 			{
 				throw new Exception($error);
 			}
+
+			return $this;
 		}
 
-		public function bind($values)
+		public function bind(array $values): self
 		{
 			$arrayType = ($values == array_values($values)) ? "NUM" : "ASSOC";
 
@@ -112,9 +119,11 @@
 					}
 				}
 			}
+
+			return $this;
 		}
 
-		public function execute()
+		public function execute(): self
 		{
 			try
 			{
@@ -124,9 +133,11 @@
 			{
 				throw new Exception($error);
 			}
+
+			return $this;
 		}
 
-		public function fetch($SQL, $return = false, $single = true, $style = \PDO::FETCH_ASSOC, $argument = null)
+		public function fetch(string $SQL, bool $return = false, bool $single = true, int $style = PDO::FETCH_ASSOC, $argument = null)
 		{
 			$results = array();
 			$queryType = strtoupper(substr($SQL, 0, strpos($SQL, " ")));
@@ -177,7 +188,7 @@
 			return $results;
 		}
 
-		public function query($SQL, $parameters = array(), $return = false, $style = \PDO::FETCH_ASSOC, $argument = null)
+		public function query(string $SQL, array $parameters = array(), bool $return = false, int $style = PDO::FETCH_ASSOC, $argument = null)
 		{
 			if ($this->connection == "")
 			{
@@ -214,7 +225,7 @@
 			return $results;
 		}
 
-		private function getParameterType($value)
+		private function getParameterType($value): int
 		{
 			if ($value === true || $value === false)
 			{
@@ -236,11 +247,11 @@
 			return $type;
 		}
 
-		public function interpolate($SQL, $parameters)
+		public function interpolate(string $SQL, array $parameters): string
 		{
 			$keys = array();
 
-			foreach($parameters as $key => $value)
+			foreach ($parameters as $key => $value)
 			{
 				$keys[] = is_string($key) ? "/" . $key . "/" : "/[?]/";
 
@@ -267,14 +278,18 @@
 			return $query;
 		}
 
-		public function transactionStart()
+		public function transactionStart(): self
 		{
 			$this->connection->beginTransaction();
+
+			return $this;
 		}
 
-		public function transactionEnd()
+		public function transactionEnd(): self
 		{
 			$this->connection->commit();
+
+			return $this;
 		}
 	}
 ?>
