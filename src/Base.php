@@ -16,7 +16,7 @@
 			}
 		}
 
-		protected function populate($data)
+		protected function populate($data): self
 		{
 			$properties = $this->getProperties();
 
@@ -37,7 +37,7 @@
 					{
 						if ($this->{$property} instanceof Base)
 						{
-							$value = $this->{$property}->populate($value);
+							$this->{$property}->populate($value);
 						}
 						else
 						{
@@ -47,10 +47,10 @@
 				}
 			}
 
-			return true;
+			return $this;
 		}
 
-		protected function getProperties()
+		protected function getProperties(): array
 		{
 			$reflection = new ReflectionClass($this->className());
 			$properties = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
@@ -65,7 +65,7 @@
 			return $results;
 		}
 
-		public function className($full = true)
+		public function className(bool $full = true): string
 		{
 			$className = get_class($this);
 
@@ -74,20 +74,6 @@
 				$namespace = explode("\\", $className);
 				$className = array_pop($namespace);
 			}
-
-			return $className;
-		}
-
-		protected function calculateNamespace($object)
-		{
-			$namespace = array(
-				__NAMESPACE__,
-				$this->className(),
-				ucwords($object->class)
-			);
-
-			$namespace = array_values(array_filter($namespace));
-			$className = implode("\\", $namespace);
 
 			return $className;
 		}

@@ -3,12 +3,16 @@
 
 	class Config extends Base
 	{
-		private $constants;
+		private array $constants;
 
 		public function __construct()
 		{
 			$this->constants = get_defined_constants(true);
-			ksort($this->constants['user']);
+
+			if (isset($this->constants['user']))
+			{
+				ksort($this->constants['user']);
+			}
 		}
 
 		public function getByName($constant)

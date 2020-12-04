@@ -1,41 +1,43 @@
 <?php
 	namespace Bolt;
 
+	use Bolt\Curl\Response;
 	use Bolt\Exceptions\Curl as Exception;
 
 	class Curl extends Base
 	{
 		private $resource = null;
-		public $options = array();
+		public array $options = array();
 
-		public $info;
-		public $data;
+		public ?array $info = null;
+		public ?string $data = null;
 
-		public function open($options = null)
+		public function open(array $options): self
 		{
 			$this->resource = curl_init();
 			$this->options = array(); // reset options store
 
 			$this->set(CURLOPT_HEADER, true); // default headers to on
 
-			if (is_array($options) === true)
+			foreach ($options as $option => $value)
 			{
-				foreach ($options as $option => $value)
-				{
-					$this->set($option, $value);
-				}
+				$this->set($option, $value);
 			}
+
+			return $this;
 		}
 
-		public function close()
+		public function close(): self
 		{
 			curl_close($this->resource);
 			$this->resource = false;
 			$this->info = null;
 			$this->data = null;
+
+			return $this;
 		}
 
-		public function execute()
+		public function execute(): self
 		{
 			$this->data = curl_exec($this->resource);
 			$this->info = curl_getinfo($this->resource);
@@ -44,73 +46,76 @@
 			{
 				throw new Exception("Error executing cURL request", $this->error());
 			}
+
+			return $this;
 		}
 
-		public function set($option, $value)
+		public function set(int $option, $value): bool
 		{
 			$this->options[$option] = $value;
 
 			return curl_setopt($this->resource, $option, $value);
 		}
 
-		public function get($option)
+		public function get(int $option)
 		{
 			return $this->options[$option];
 		}
 
-		public function fetch($options = null)
+		public function fetch(array $options): Response
 		{
 			$this->open($options);
 			$this->execute();
 
-			if ($this->get(CURLOPT_HEADER) == true)
+			$body = $this->data;
+			$parsed = null;
+
+			if ($this->get(CURLOPT_HEADER) === true)
 			{
-				# Headers regex
-				$pattern = "#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims";
+				// Headers regex
+				$pattern = "/^HTTP\/(?'version'\d\.?\d?)\s(?'code'\d{3})\s?(?'message'[\w ]*)\X*\R\R/ims";
 
-				# Extract headers from response
-				preg_match_all($pattern, $this->data, $matches);
-				$headers_string = array_pop($matches[0]);
-				$headers = explode("\r\n", str_replace("\r\n\r\n", '', $headers_string));
+				// Extract headers from response
+				preg_match($pattern, $this->data, $matches);
 
-				# Remove headers from the response body
-				$body = str_replace($headers_string, '', $this->data);
+				$headersString = $matches[0];
 
-				# Extract the version and status from the first header
-				$version_and_status = array_shift($headers);
-				preg_match("#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#", $version_and_status, $matches);
+				if (!isset($headersString) || empty($headersString))
+				{
+					throw new Exception("Error parsing response headers");
+				}
 
-				$parsed = array();
+				$headers = explode(PHP_EOL, trim($headersString));
 
-				$parsed['http-version'] = $matches[1];
-				$parsed['status-code'] = $matches[2];
-				$parsed['status'] = $matches[2] . ' ' . $matches[3];
+				// Remove headers from the response body
+				$body = str_replace($headersString, '', $this->data);
 
-				# Convert headers into an associative array
+				// Extract the version and status from the first header
+				array_shift($headers);
+				$parsed['http-version'] = $matches['version'];
+				$parsed['status-code'] = $matches['code'];
+				$parsed['status'] = $matches['code'] . ' ' . $matches['message'];
+
+				// Convert headers into an associative array
 				foreach ($headers as $header)
 				{
-					preg_match('#(.*?)\:\s(.*)#', $header, $matches);
-					$parsed[strtolower($matches[1])] = $matches[2];
+					preg_match("/(?'key'.*?)\:\s(?'value'[\S ]+)/i", $header, $matches);
+					$parsed[strtolower($matches['key'])] = $matches['value'];
 				}
 			}
-			else
-			{
-				$body = $this->data;
-				$parsed = null;
-			}
 
-			$result = new Curl\Response($this->info['http_code'], $this->parseBody($body, $this->info['content_type']), $parsed);
+			$result = new Response($this->info['http_code'], $this->parseBody($body, $this->info['content_type']), $parsed);
 			$this->close();
 
 			return $result;
 		}
 
-		public function error()
+		public function error(): int
 		{
 			return curl_errno($this->resource);
 		}
 
-		private function parseBody($body, $contentType)
+		private function parseBody(string $body, string $contentType)
 		{
 			switch ($contentType)
 			{

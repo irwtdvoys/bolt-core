@@ -3,7 +3,7 @@
 
 	abstract class Exception extends \Exception
 	{
-		protected $codes;
+		protected Codes $codes;
 
 		public function __construct($message = null, $code = 0, Exception $previous = null)
 		{

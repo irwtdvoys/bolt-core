@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb26d2180e82f0a022bf32f9f9306103",
-    "packages": [],
+    "content-hash": "f23dcc7c444d76a4bfb28d61c24842c8",
+    "packages": [
+        {
+            "name": "cruxoft/bolt-support",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/irwtdvoys/bolt-support.git",
+                "reference": "7703d52ec6a282b3a6f9f909ef08aa6ea9d94195"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/irwtdvoys/bolt-support/zipball/7703d52ec6a282b3a6f9f909ef08aa6ea9d94195",
+                "reference": "7703d52ec6a282b3a6f9f909ef08aa6ea9d94195",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4"
+            },
+            "require-dev": {
+                "cruxoft/dump": "^0.2",
+                "phpunit/phpunit": "^9.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bolt\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Steve Adams",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Standalone support library for the Bolt Framework",
+            "keywords": [
+                "bolt"
+            ],
+            "support": {
+                "issues": "https://github.com/irwtdvoys/bolt-support/issues",
+                "source": "https://github.com/irwtdvoys/bolt-support/tree/0.3.0"
+            },
+            "time": "2020-11-11T22:31:16+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "cruxoft/dump",
@@ -52,6 +101,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": []
+    "platform": {
+        "php": "^7"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

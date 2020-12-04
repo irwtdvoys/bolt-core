@@ -5,7 +5,7 @@
 
 	class Http extends Base
 	{
-		public function groupLookup($code)
+		public function groupLookup(int $code): string
 		{
 			if ($code < 200)
 			{
@@ -35,7 +35,7 @@
 			return $group;
 		}
 
-		public function codeLookup($code)
+		public function codeLookup(int $code): string
 		{
 			switch ($code)
 			{

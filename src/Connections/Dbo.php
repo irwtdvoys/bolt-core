@@ -1,16 +1,19 @@
 <?php
 	namespace Bolt\Connections;
 
-	use \Bolt\Base;
-	use \Bolt\Interfaces\Connection;
-	use \PDO;
+	use Bolt\Base;
+	use Bolt\Exceptions\Dbo as Exception;
+	use Bolt\Interfaces\Connection;
+	use PDO;
+	use PDOException;
+	use PDOStatement;
 
 	class Dbo extends Base implements Connection
 	{
-		protected $connection;
-		protected $statement;
+		protected PDO $connection;
+		protected PDOStatement $statement;
 
-		public $config;
+		public Config\Dbo $config;
 
 		public function __construct(Config\Dbo $config)
 		{
@@ -32,12 +35,12 @@
 			return strtolower($this->className(false));
 		}
 
-		public function state()
+		public function state(): string
 		{
 			return ($this->connection == "") ? "Disconnected" : "Connected";
 		}
 
-		public function connect()
+		public function connect(): self
 		{
 			$options = array();
 
@@ -60,30 +63,36 @@
 			{
 				$this->connection(new PDO($dsn, $this->config->username(), $this->config->password(), $options));
 			}
-			catch (\PDOException $error)
+			catch (PDOException $error)
 			{
-				throw new \Bolt\Exceptions\Dbo($error);
+				throw new Exception($error);
 			}
+
+			return $this;
 		}
 
-		public function disconnect()
+		public function disconnect(): self
 		{
 			$this->connection(null);
+
+			return $this;
 		}
 
-		public function prepare($SQL)
+		public function prepare(string $SQL): self
 		{
 			try
 			{
 				$this->statement = $this->connection->prepare($SQL);
 			}
-			catch (\PDOException $error)
+			catch (PDOException $error)
 			{
-				throw new \Bolt\Exceptions\Dbo($error);
+				throw new Exception($error);
 			}
+
+			return $this;
 		}
 
-		public function bind($values)
+		public function bind(array $values): self
 		{
 			$arrayType = ($values == array_values($values)) ? "NUM" : "ASSOC";
 
@@ -104,27 +113,31 @@
 					{
 						$this->statement->bindParam($id, $values[$key], $paramType);
 					}
-					catch (\PDOException $error)
+					catch (PDOException $error)
 					{
-						throw new \Bolt\Exceptions\Dbo($error);
+						throw new Exception($error);
 					}
 				}
 			}
+
+			return $this;
 		}
 
-		public function execute()
+		public function execute(): self
 		{
 			try
 			{
 				$this->statement->execute();
 			}
-			catch (\PDOException $error)
+			catch (PDOException $error)
 			{
-				throw new \Bolt\Exceptions\Dbo($error);
+				throw new Exception($error);
 			}
+
+			return $this;
 		}
 
-		public function fetch($SQL, $return = false, $single = true, $style = \PDO::FETCH_ASSOC, $argument = null)
+		public function fetch(string $SQL, bool $return = false, bool $single = true, int $style = PDO::FETCH_ASSOC, $argument = null)
 		{
 			$results = array();
 			$queryType = strtoupper(substr($SQL, 0, strpos($SQL, " ")));
@@ -133,9 +146,9 @@
 			{
 				switch ($style)
 				{
-					case \PDO::FETCH_CLASS:
-					case \PDO::FETCH_COLUMN:
-					case \PDO::FETCH_FUNC:
+					case PDO::FETCH_CLASS:
+					case PDO::FETCH_COLUMN:
+					case PDO::FETCH_FUNC:
 						$results = $this->statement->fetchAll($style, $argument);
 						break;
 					default:
@@ -175,11 +188,11 @@
 			return $results;
 		}
 
-		public function query($SQL, $parameters = array(), $return = false, $style = \PDO::FETCH_ASSOC, $argument = null)
+		public function query(string $SQL, array $parameters = array(), bool $return = false, int $style = PDO::FETCH_ASSOC, $argument = null)
 		{
 			if ($this->connection == "")
 			{
-				throw new \Bolt\Exceptions\Dbo("Not connected");
+				throw new Exception("Not connected");
 			}
 
 			$this->prepare($SQL);
@@ -212,33 +225,33 @@
 			return $results;
 		}
 
-		private function getParameterType($value)
+		private function getParameterType($value): int
 		{
 			if ($value === true || $value === false)
 			{
-				$type = \PDO::PARAM_BOOL;
+				$type = PDO::PARAM_BOOL;
 			}
 			elseif ($value === null)
 			{
-				$type = \PDO::PARAM_NULL;
+				$type = PDO::PARAM_NULL;
 			}
 			elseif (is_int($value))
 			{
-				$type = \PDO::PARAM_INT;
+				$type = PDO::PARAM_INT;
 			}
 			else
 			{
-				$type = \PDO::PARAM_STR;
+				$type = PDO::PARAM_STR;
 			}
 
 			return $type;
 		}
 
-		public function interpolate($SQL, $parameters)
+		public function interpolate(string $SQL, array $parameters): string
 		{
 			$keys = array();
 
-			foreach($parameters as $key => $value)
+			foreach ($parameters as $key => $value)
 			{
 				$keys[] = is_string($key) ? "/" . $key . "/" : "/[?]/";
 
@@ -265,14 +278,18 @@
 			return $query;
 		}
 
-		public function transactionStart()
+		public function transactionStart(): self
 		{
 			$this->connection->beginTransaction();
+
+			return $this;
 		}
 
-		public function transactionEnd()
+		public function transactionEnd(): self
 		{
 			$this->connection->commit();
+
+			return $this;
 		}
 	}
 ?>
