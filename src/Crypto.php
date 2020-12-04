@@ -11,7 +11,7 @@
 
 		protected bool $encoding;
 
-		public function __construct($algorithm = "aes-128-cbc", $mode = null, $key = "1234567890ABCDEFabcdef1234567890", $base64 = true, $vector = null, $auto = true)
+		public function __construct(string $algorithm = "aes-128-cbc", string $key = "1234567890ABCDEFabcdef1234567890", bool $base64 = true, string $vector = null, bool $auto = true)
 		{
 			$this->algorithm($algorithm);
 			$this->key($key);
@@ -38,7 +38,7 @@
 		{
 		}
 
-		public function encrypt($text)
+		public function encrypt(string $text): string
 		{
 			$data = openssl_encrypt($text,  $this->algorithm, $this->key, OPENSSL_RAW_DATA, $this->vector);
 
@@ -50,7 +50,7 @@
 			return ($this->encoding === true) ? base64_encode($data) : $data;
 		}
 
-		public function decrypt($data)
+		public function decrypt(string $data): string
 		{
 			$data = ($this->encoding === true) ? base64_decode($data) : $data;
 
@@ -66,7 +66,7 @@
 			return trim(openssl_decrypt($data,  $this->algorithm, $this->key, OPENSSL_RAW_DATA, $this->vector)); // trim removes padding added to the key when originally encrypted)
 		}
 
-		public function setVector($vector = null)
+		public function setVector(string $vector = null): string
 		{
 			$this->vectorSize = openssl_cipher_iv_length($this->algorithm);
 			$this->vector = ($vector === null) ? random_bytes($this->vectorSize) : $vector;

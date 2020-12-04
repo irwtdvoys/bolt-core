@@ -34,7 +34,7 @@
 			return strtolower($this->className(false));
 		}
 
-		public function state()
+		public function state(): string
 		{
 			return ($this->connection == "") ? "Disconnected" : "Connected";
 		}
