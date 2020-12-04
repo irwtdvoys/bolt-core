@@ -25,6 +25,8 @@
 					$this->set($option, $value);
 				}
 			}
+
+			return $this;
 		}
 
 		public function close()
@@ -33,6 +35,8 @@
 			$this->resource = false;
 			$this->info = null;
 			$this->data = null;
+
+			return $this;
 		}
 
 		public function execute()
@@ -44,6 +48,8 @@
 			{
 				throw new Exception("Error executing cURL request", $this->error());
 			}
+
+			return $this;
 		}
 
 		public function set($option, $value)
