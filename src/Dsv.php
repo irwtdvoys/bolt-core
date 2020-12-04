@@ -13,14 +13,14 @@
 
 		protected $files;
 
-		public function __construct($delimiter = ",", $enclosure = '"', $object = null)
+		public function __construct(string $delimiter = ",", string $enclosure = '"', array $data = null)
 		{
 			$this->delimiter = $delimiter;
 			$this->enclosure = $enclosure;
 
-			if ($object !== null)
+			if ($data !== null)
 			{
-				$this->addData($object);
+				$this->addData($data);
 			}
 
 			$this->files = new Files();
@@ -100,7 +100,7 @@
 			fclose($this->stream);
 		}
 
-		public function output($filename = "export.csv")
+		public function output(string $filename = "export.csv"): void
 		{
 			header("Content-type: application/csv");
 			header("Content-Disposition: attachment; filename=" . $filename);
