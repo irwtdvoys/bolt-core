@@ -122,7 +122,7 @@
 				case "application/json":
 				case "application/json; charset=UTF-8":
 				case "application/json; charset=utf-8":
-					$parsed = json_decode($body);
+					$parsed = Json::decode($body);
 					break;
 				default:
 					$parsed = $body;
