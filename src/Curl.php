@@ -101,7 +101,7 @@
 				# Convert headers into an associative array
 				foreach ($headers as $header)
 				{
-					preg_match("/(?'key'.*?)\:\s(?'value'[\w ]*)/", $header, $matches);
+					preg_match("/(?'key'.*?)\:\s(?'value'[\S ]+)/i", $header, $matches);
 					$parsed[strtolower($matches['key'])] = $matches['value'];
 				}
 			}
