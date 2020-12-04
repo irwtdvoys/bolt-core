@@ -2,8 +2,10 @@
 	namespace Bolt\Connections;
 
 	use \Bolt\Base;
+	use Bolt\Exceptions\Dbo as Exception;
 	use \Bolt\Interfaces\Connection;
 	use \PDO;
+	use PDOException;
 
 	class Dbo extends Base implements Connection
 	{
@@ -60,9 +62,9 @@
 			{
 				$this->connection(new PDO($dsn, $this->config->username(), $this->config->password(), $options));
 			}
-			catch (\PDOException $error)
+			catch (PDOException $error)
 			{
-				throw new \Bolt\Exceptions\Dbo($error);
+				throw new Exception($error);
 			}
 		}
 
@@ -77,9 +79,9 @@
 			{
 				$this->statement = $this->connection->prepare($SQL);
 			}
-			catch (\PDOException $error)
+			catch (PDOException $error)
 			{
-				throw new \Bolt\Exceptions\Dbo($error);
+				throw new Exception($error);
 			}
 		}
 
@@ -104,9 +106,9 @@
 					{
 						$this->statement->bindParam($id, $values[$key], $paramType);
 					}
-					catch (\PDOException $error)
+					catch (PDOException $error)
 					{
-						throw new \Bolt\Exceptions\Dbo($error);
+						throw new Exception($error);
 					}
 				}
 			}
@@ -118,9 +120,9 @@
 			{
 				$this->statement->execute();
 			}
-			catch (\PDOException $error)
+			catch (PDOException $error)
 			{
-				throw new \Bolt\Exceptions\Dbo($error);
+				throw new Exception($error);
 			}
 		}
 
@@ -133,9 +135,9 @@
 			{
 				switch ($style)
 				{
-					case \PDO::FETCH_CLASS:
-					case \PDO::FETCH_COLUMN:
-					case \PDO::FETCH_FUNC:
+					case PDO::FETCH_CLASS:
+					case PDO::FETCH_COLUMN:
+					case PDO::FETCH_FUNC:
 						$results = $this->statement->fetchAll($style, $argument);
 						break;
 					default:
@@ -179,7 +181,7 @@
 		{
 			if ($this->connection == "")
 			{
-				throw new \Bolt\Exceptions\Dbo("Not connected");
+				throw new Exception("Not connected");
 			}
 
 			$this->prepare($SQL);
@@ -216,19 +218,19 @@
 		{
 			if ($value === true || $value === false)
 			{
-				$type = \PDO::PARAM_BOOL;
+				$type = PDO::PARAM_BOOL;
 			}
 			elseif ($value === null)
 			{
-				$type = \PDO::PARAM_NULL;
+				$type = PDO::PARAM_NULL;
 			}
 			elseif (is_int($value))
 			{
-				$type = \PDO::PARAM_INT;
+				$type = PDO::PARAM_INT;
 			}
 			else
 			{
-				$type = \PDO::PARAM_STR;
+				$type = PDO::PARAM_STR;
 			}
 
 			return $type;
