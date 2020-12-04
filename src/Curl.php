@@ -63,40 +63,39 @@
 			$this->open($options);
 			$this->execute();
 
-			if ($this->get(CURLOPT_HEADER) == true)
+			$body = $this->data;
+			$parsed = null;
+
+			if ($this->get(CURLOPT_HEADER) === true)
 			{
 				# Headers regex
-				$pattern = "#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims";
+				$pattern = "/^HTTP\/(?'version'\d\.?\d?)\s(?'code'\d{3})\s?(?'message'[\w ]*)\X*\R\R/ims";
 
 				# Extract headers from response
-				preg_match_all($pattern, $this->data, $matches);
-				$headers_string = array_pop($matches[0]);
-				$headers = explode("\r\n", str_replace("\r\n\r\n", '', $headers_string));
+				preg_match($pattern, $this->data, $matches);
 
-				# Remove headers from the response body
-				$body = str_replace($headers_string, '', $this->data);
+				$headersString = $matches[0];
 
-				# Extract the version and status from the first header
-				$version_and_status = array_shift($headers);
-				preg_match("#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#", $version_and_status, $matches);
-
-				$parsed = array();
-
-				$parsed['http-version'] = $matches[1];
-				$parsed['status-code'] = $matches[2];
-				$parsed['status'] = $matches[2] . ' ' . $matches[3];
-
-				# Convert headers into an associative array
-				foreach ($headers as $header)
+				if (isset($headersString) && !empty($headersString))
 				{
-					preg_match('#(.*?)\:\s(.*)#', $header, $matches);
-					$parsed[strtolower($matches[1])] = $matches[2];
+					$headers = explode(PHP_EOL, trim($headersString));
+
+					# Remove headers from the response body
+					$body = str_replace($headersString, '', $this->data);
+
+					# Extract the version and status from the first header
+					array_shift($headers);
+					$parsed['http-version'] = $matches['version'];
+					$parsed['status-code'] = $matches['code'];
+					$parsed['status'] = $matches['code'] . ' ' . $matches['message'];
+
+					# Convert headers into an associative array
+					foreach ($headers as $header)
+					{
+						preg_match("/(?'key'.*?)\:\s(?'value'[\w ]*)/", $header, $matches);
+						$parsed[strtolower($matches['key'])] = $matches['value'];
+					}
 				}
-			}
-			else
-			{
-				$body = $this->data;
-				$parsed = null;
 			}
 
 			$result = new Curl\Response($this->info['http_code'], $this->parseBody($body, $this->info['content_type']), $parsed);
