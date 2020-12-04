@@ -76,25 +76,27 @@
 
 				$headersString = $matches[0];
 
-				if (isset($headersString) && !empty($headersString))
+				if (!isset($headersString) || empty($headersString))
 				{
-					$headers = explode(PHP_EOL, trim($headersString));
+					throw new Exception("Error parsing response headers");
+				}
 
-					# Remove headers from the response body
-					$body = str_replace($headersString, '', $this->data);
+				$headers = explode(PHP_EOL, trim($headersString));
 
-					# Extract the version and status from the first header
-					array_shift($headers);
-					$parsed['http-version'] = $matches['version'];
-					$parsed['status-code'] = $matches['code'];
-					$parsed['status'] = $matches['code'] . ' ' . $matches['message'];
+				# Remove headers from the response body
+				$body = str_replace($headersString, '', $this->data);
 
-					# Convert headers into an associative array
-					foreach ($headers as $header)
-					{
-						preg_match("/(?'key'.*?)\:\s(?'value'[\w ]*)/", $header, $matches);
-						$parsed[strtolower($matches['key'])] = $matches['value'];
-					}
+				# Extract the version and status from the first header
+				array_shift($headers);
+				$parsed['http-version'] = $matches['version'];
+				$parsed['status-code'] = $matches['code'];
+				$parsed['status'] = $matches['code'] . ' ' . $matches['message'];
+
+				# Convert headers into an associative array
+				foreach ($headers as $header)
+				{
+					preg_match("/(?'key'.*?)\:\s(?'value'[\w ]*)/", $header, $matches);
+					$parsed[strtolower($matches['key'])] = $matches['value'];
 				}
 			}
 
