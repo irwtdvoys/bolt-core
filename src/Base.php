@@ -78,20 +78,6 @@
 			return $className;
 		}
 
-		protected function calculateNamespace($object)
-		{
-			$namespace = array(
-				__NAMESPACE__,
-				$this->className(),
-				ucwords($object->class)
-			);
-
-			$namespace = array_values(array_filter($namespace));
-			$className = implode("\\", $namespace);
-
-			return $className;
-		}
-
 		public function __call($name, $args)
 		{
 			$class = $this->className();
