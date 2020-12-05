@@ -62,7 +62,7 @@
 			if (fclose($this->resource) === true)
 			{
 				$this->resource = false;
-				$this->stats = null;
+				$this->stats = [];
 			}
 
 			return $this;
