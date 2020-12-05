@@ -1,12 +1,11 @@
 <?php
 	namespace Bolt;
 
-	use Bolt\Interfaces\Adapter;
 	use Bolt\Interfaces\Connection;
 
 	abstract class Repository extends Base
 	{
-		protected Adapter $adapter;
+		protected ?Adapter $adapter = null;
 
 		public function __construct(Connection $connection = null, $data = null)
 		{
