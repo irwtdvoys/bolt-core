@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^7",
-        "cruxoft/bolt-support": "^0.3.0"
+        "cruxoft/bolt-support": "^0.4.0"
     },
     "require-dev": {
         "cruxoft/dump": "^0.2.2"
