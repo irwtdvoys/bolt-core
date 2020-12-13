@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f23dcc7c444d76a4bfb28d61c24842c8",
+    "content-hash": "aa6644aec078d29c6c52ff7db7a572c1",
     "packages": [
         {
             "name": "cruxoft/bolt-support",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/irwtdvoys/bolt-support.git",
-                "reference": "7703d52ec6a282b3a6f9f909ef08aa6ea9d94195"
+                "reference": "98d2eee0d68795799572850e532f49d6cfbfd4d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/irwtdvoys/bolt-support/zipball/7703d52ec6a282b3a6f9f909ef08aa6ea9d94195",
-                "reference": "7703d52ec6a282b3a6f9f909ef08aa6ea9d94195",
+                "url": "https://api.github.com/repos/irwtdvoys/bolt-support/zipball/98d2eee0d68795799572850e532f49d6cfbfd4d6",
+                "reference": "98d2eee0d68795799572850e532f49d6cfbfd4d6",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/irwtdvoys/bolt-support/issues",
-                "source": "https://github.com/irwtdvoys/bolt-support/tree/0.3.0"
+                "source": "https://github.com/irwtdvoys/bolt-support/tree/0.4.0"
             },
-            "time": "2020-11-11T22:31:16+00:00"
+            "time": "2020-12-13T20:06:55+00:00"
         }
     ],
     "packages-dev": [
@@ -93,6 +93,10 @@
                 }
             ],
             "description": "A system for generating structure information about nested variables for use including screen display",
+            "support": {
+                "issues": "https://github.com/irwtdvoys/dump/issues",
+                "source": "https://github.com/irwtdvoys/dump/tree/master"
+            },
             "time": "2018-03-14T14:14:53+00:00"
         }
     ],
