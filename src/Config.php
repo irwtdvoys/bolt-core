@@ -46,7 +46,7 @@
 			{
 				foreach ($data as $key => $value)
 				{
-					list($head, $tail) = explode("_", strtolower($key), 2);
+					list($head, $tail) = array_pad(explode("_", strtolower($key), 2), 2, null);
 
 					if ($tail == "")
 					{
@@ -82,7 +82,7 @@
 			else
 			{
 				$info = $this->inflate($this->getByPrefix(strtoupper($type) . "_"));
-				$result = $info[$type];
+				$result = $info[$type] ?? (object)[];
 			}
 
 			return $result;
