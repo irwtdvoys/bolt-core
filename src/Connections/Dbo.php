@@ -10,7 +10,7 @@
 
 	class Dbo extends Base implements Connection
 	{
-		protected PDO $connection;
+		protected ?PDO $connection = null;
 		protected PDOStatement $statement;
 
 		public Config\Dbo $config;
