@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bd0f73fcd6b01f990fd9ebf5b7c55bc",
+    "content-hash": "43af46681777703165a434b8d4dc196f",
     "packages": [
         {
             "name": "cruxoft/bolt-support",
-            "version": "0.6.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/irwtdvoys/bolt-support.git",
-                "reference": "6e59bf824a1e4bc7d20524671dfcecfd2ee69330"
+                "reference": "a0ddb5a922f2fbcfea7161e484caa512f275811d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/irwtdvoys/bolt-support/zipball/6e59bf824a1e4bc7d20524671dfcecfd2ee69330",
-                "reference": "6e59bf824a1e4bc7d20524671dfcecfd2ee69330",
+                "url": "https://api.github.com/repos/irwtdvoys/bolt-support/zipball/a0ddb5a922f2fbcfea7161e484caa512f275811d",
+                "reference": "a0ddb5a922f2fbcfea7161e484caa512f275811d",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/irwtdvoys/bolt-support/issues",
-                "source": "https://github.com/irwtdvoys/bolt-support/tree/0.6.0"
+                "source": "https://github.com/irwtdvoys/bolt-support/tree/0.7.0"
             },
-            "time": "2022-12-11T14:36:44+00:00"
+            "time": "2024-02-29T14:40:03+00:00"
         }
     ],
     "packages-dev": [
@@ -109,5 +109,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
